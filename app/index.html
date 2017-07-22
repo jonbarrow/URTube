@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="./assets/css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/bootstrap-notifications.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/notify.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
+
+    <title>URTube</title>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="transient-header-block">
+                <a class="navbar-brand" href="/">URTube</a>
+                <div class="pull-right">
+                    <a class="btn-window-option btn-window-option-minimize sizable"><i class="icon-window-item-minimize"></i></a>
+                    <a class="btn-window-option btn-window-option-maximize sizable"><i class="icon-window-item-maximize"></i></a>
+                    <a class="btn-window-option btn-window-option-close sizable"><i class="icon-window-item-close"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay">
+    	<div class="overlay-content">
+    		<span class="overlay-text"></span>
+    		<span><i class="fa fa-spinner fa-spin"></i></span>
+    	</div>
+    </div>
+
+    <div class="container-fluid app-content">
+        <div class="dl-list">
+            <div class="dl-list-header row">
+                <h1>Downloads <span><i class="fa fa-times"></i></span></h1>
+            </div>
+            <div class="dl-list-content row container"></div>
+        </div>
+        <div class="search-area-content">
+            <div class="dl-area-search-bar row">
+                <div class="row">
+                    <div class="col-xs-1 text-center">
+                        <i class="fa fa-download sizable" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-xs-11">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-bar" aria-label="Search for videos" onkeypress="checkKey(event)">
+                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+	            <div class="dl-area-search-buttons text-center">
+	        	</div>
+                <div class="dl-area-search-results container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="./assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/js/jquery.bootstrap.js" type="text/javascript"></script>
+    <script src="./assets/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="./assets/js/notify.js" type="text/javascript"></script>
+    <script src="./assets/js/script.js" type="text/javascript"></script>
+    <script>if (window.module) module = window.module;</script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "URTube",
+  "description": "A YouTube video to MP3 downloader built in NodeJs and run with Electron",
+  "version": "0.0.1",
+  "main": "app.js",
+  "dependencies": {
+    "electron": "^1.6.2",
+    "electron-packager": "^8.6.0",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^3.0.0",
+    "get-artist-title": "^1.0.0",
+    "node-id3": "0.0.9",
+    "request": "^2.81.0",
+    "ytdl-core": "^0.14.4"
+  },
+  "scripts": {
+    "start-dev": "electron ."
+  }
+}
