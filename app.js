@@ -93,8 +93,6 @@ function downloadVideoMP3(data, time) {
 		title = data.title
 		time = data.time;
 
-	console.log(data);
-
 	downloadThumbnail(thumbnail_url, './tmps/' + id + '.jpeg', (error) => {
         if (error) {
             return console.log(error);
@@ -110,8 +108,6 @@ function downloadVideoMP3(data, time) {
             image: './tmps/' + id + '.jpeg',
             album: uploader
         }
-
-        console.log(metadata);
 
         var received_bytes = 0,
             total_bytes = 0;
@@ -176,7 +172,7 @@ function pickSaveDirectory(name) {
 	});
 
 	if (!folder) {
-		return pickSMMLevelFolder();
+		return pickSaveDirectory();
 	}
 	return folder;
 }
