@@ -98,16 +98,26 @@ function downloadVideoMP3(data, time) {
             return console.log(error);
         }
 
-        var artist_title = getArtistTitle(title);
-
-        var folder = pickSaveDirectory(artist_title[0] + ' - ' + artist_title[1] + '.mp3');
-
-        var metadata = {
-            artist: artist_title[0],
-            title: artist_title[1],
-            image: './tmps/' + id + '.jpeg',
-            album: uploader
-        }
+				var artist_title = getArtistTitle(title);
+				var folder;
+				var metadata;
+				if(artist_title){
+					folder = pickSaveDirectory(artist_title[0] + ' - ' + artist_title[1] + '.mp3');
+					metadata = {
+						artist: artist_title[0],
+						title: artist_title[1],
+						image: './tmps/' + id + '.jpeg',
+						album: uploader
+					}
+				}else {
+					folder = pickSaveDirectory(title + '.mp3');
+					metadata = {
+						artist: uploader,
+						title: title,
+						image: './tmps/' + id + '.jpeg',
+						album: uploader
+					}
+				}
 
         var received_bytes = 0,
             total_bytes = 0;
