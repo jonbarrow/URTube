@@ -1,4 +1,4 @@
-# URTube, a YouTube video to MP3 downloader built in NodeJs and Electron
+# URTube, a YouTube video to MP3 downloader and SoundCloud MP3 ripper built in NodeJs and Electron
 
 <p align="center">
   <img src="https://i.imgur.com/3xxdzrI.png" width="200">
@@ -13,8 +13,8 @@
 - [X] Set video thumbnail as cover art metadata
 - [X] Set uploader as album metadata name
 - [X] Properly set the artist and song metadata based on video title
-- [ ] SoundCloud support
-- [ ] all the stuff above but for SoundCloud songs
+- [X] SoundCloud support (CURRENTLY SOUNDCLOUD SUPPORT IS VERY ROUGH AND NOT WELL WRITTEN. IT SHOULD BE REWRITTEN)
+- [X] all the stuff above but for SoundCloud songs
 
 ## Known bugs
 
