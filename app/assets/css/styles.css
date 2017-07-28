@@ -32,12 +32,25 @@ body, html {
 	margin-bottom: 0;
 	border-radius: 0;
 }
-.navbar i {
-	-webkit-app-region: no-drag
+.navbar i, .navbar img {
+	-webkit-app-region: no-drag;
 }
 
 .fa:hover {
 	cursor: pointer; cursor: hand;
+}
+
+.navbar img:nth-of-type(1) {
+	margin-left: 10px;
+}
+
+.provider {
+	height: 50px;
+	width: auto;
+}
+
+.provider.active {
+	-webkit-filter: drop-shadow(0 0 5px #FFFFFF);
 }
 
 .app-content {
@@ -84,6 +97,24 @@ body, html {
     right: 0;
     bottom: 0;
     left: 0;
+}
+
+.provider-header .input-group {
+	margin-top: 25px;
+}
+
+#youtube-header span:nth-child(1) {
+	color: #FFFFFF;
+}
+#youtube-header span:nth-child(2) {
+	color: #EC2828;
+}
+
+#soundcloud-container {
+	display: none;
+}
+#soundcloud-header span {
+	color: #F7780F;
 }
 
 .dl-list {

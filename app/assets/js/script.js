@@ -2,6 +2,9 @@ const {ipcRenderer} = require('electron'); // Gets ipcRenderer
 
 var dl_array = [];
 
+var sc_api_keys = ['2t9loNQH90kzJcsFCODdigxfp325aq4z','a3e059563d7fd3372b49b37f00a00bcf','23aca29c4185d222f2e536f440e96b91'];
+	// I totally didn't steal these from other GitHub repos
+
 $(function() {
     $('.loader-container').hide();
 	$('[data-toggle="popover"]').popover();
@@ -19,6 +22,15 @@ $(function() {
 	});
 });
 
+$('.provider').click((event) => {
+	$('.provider').removeClass('active');
+	$(event.target).addClass('active');
+
+	var target = $(event.target).attr('id');
+
+	$('.search-area-content').hide();
+	$('#' + target + '-container').show();
+});
 
 $('body').on('click', '.dl-button', function(event) {
 	event.preventDefault();
@@ -27,6 +39,15 @@ $('body').on('click', '.dl-button', function(event) {
 
 	var time = Date.now();
 	ipcRenderer.send('start-dl', {id: $(this).attr('--data-videoId'), thumbnail_url: $(this).attr('--data-videoThumbnailUrl'), uploader: $(this).attr('--data-uploader'), title: $(this).attr('--data-title'), time: time});
+});
+
+$('body').on('click', '.dl-button-sc', function(event) {
+	event.preventDefault();
+	$('.overlay-text').html('Working...');
+	$('.overlay').css('display', 'block');
+
+	var time = Date.now();
+	ipcRenderer.send('start-dl-sc', {url: $(this).attr('--data-url'), time: time});
 });
 
 $('body').on('click', '.newpage', function(event) {
@@ -78,14 +99,17 @@ function rePos() {
 function checkKey(event) {
 	var key = (event.keyCode ? event.keyCode : event.which);
 	if (key == 13) {
-    	var query = $('.search-bar').val().trim();
+		var target = $(event.target),
+			parent = target.parent(),
+			search_bar = parent.find('.search-bar');
+    	var query = search_bar.val().trim();
 		if (query === '') return;
 		
-		search(query);
+		search(search_bar.attr('--provider'), query);
 	}
 }
 
-function search(query, token=null) {
+function search(provider, query, token=null) {
 
 	$('.overlay-text').html('Searching for: ' + query);
 	$('.overlay').css('display', 'block');
@@ -98,31 +122,67 @@ function search(query, token=null) {
 		post.pageToken = token;
 	}
 
-	$.post('http://165.227.153.194/', post, function(data, textStatus, xhr) {
-		data = JSON.parse(data);
-		$('.dl-area-search-results').html('');
-		$('.dl-area-search-buttons').html('');
-		for (var i = 0; i < data.results.length; i++) {
-			$('.dl-area-search-results').append(
-				'<div class="row">\
-					<div class="video">\
-						<div class="thumbail">\
-                            <img src="' + data.results[i].thumbnail_url.url + '">\
-                        </div>\
-                        <div class="details">\
-                            <div class="title">' + data.results[i].title + '</div>\
-                            <div --data-videoId="' + data.results[i].id + '" --data-videoThumbnailUrl="' + data.results[i].thumbnail_url.url + '" --data-uploader="' + data.results[i].uploader + '" --data-title="' + data.results[i].title + '" class="dl-button"><button class="btn btn-info">Download MP3</button></div>\
-                        </div>\
-					</div>\
-				</div>'
-			);
-		}
-		if (data.prevPageToken) {
-			$('.dl-area-search-buttons').prepend('<button class="newpage btn btn-success" --data-token="' + data.prevPageToken + '" --data-search="' + query + '">Previous 50 results</button>');
-		}
-		if (data.nextPageToken) {
-			$('.dl-area-search-buttons').prepend('<button class="newpage btn btn-success" --data-token="' + data.nextPageToken + '" --data-search="' + query + '">Next 50 results</button>');
-		}
-		$('.overlay').css('display', 'none');
-	});
+	if (provider === 'soundcloud') {
+		var current_api_key = sc_api_keys[Math.floor(Math.random() * sc_api_keys.length)];
+		$.get('http://api.soundcloud.com/tracks.json?q=' + query + '&limit=50&linked_partitioning=1&client_id=' + current_api_key, function(data, textStatus, xhr) {
+			var container = $('#' + provider + '-container'),
+				results_container = container.find('.dl-area-search-results');
+
+			container.find('.dl-area-search-results').html('');
+
+			for (var i = 0; i < data.collection.length; i++) {
+				if (data.collection[i].artwork_url) {
+					var artwork_url = data.collection[i].artwork_url.replace('-large.jpg', '-t500x500.jpg');
+				} else {
+					var artwork_url = "idk.png"
+				}
+				results_container.append(
+					'<div class="row">\
+						<div class="video">\
+							<div class="thumbail">\
+								<img src="' + artwork_url + '">\
+							</div>\
+							<div class="details">\
+								<div class="title">' + data.collection[i].title + '</div>\
+								<div --data-url="' + data.collection[i].permalink_url + '" class="dl-button-sc"><button class="btn btn-info">Download MP3</button></div>\
+							</div>\
+						</div>\
+					</div>'
+				);
+			}
+			$('.overlay').css('display', 'none');
+		});
+	} else if (provider === 'youtube') {
+		$.post('http://165.227.153.194/', post, function(data, textStatus, xhr) {
+			data = JSON.parse(data);
+			var container = $('#' + provider + '-container'),
+				results_container = container.find('.dl-area-search-results');
+
+			container.find('.dl-area-search-results').html('');
+			container.find('.dl-area-search-buttons').html('');
+
+			for (var i = 0; i < data.results.length; i++) {
+				results_container.append(
+					'<div class="row">\
+						<div class="video">\
+							<div class="thumbail">\
+								<img src="' + data.results[i].thumbnail_url.url + '">\
+							</div>\
+							<div class="details">\
+								<div class="title">' + data.results[i].title + '</div>\
+								<div --data-videoId="' + data.results[i].id + '" --data-videoThumbnailUrl="' + data.results[i].thumbnail_url.url + '" --data-uploader="' + data.results[i].uploader + '" --data-title="' + data.results[i].title + '" class="dl-button"><button class="btn btn-info">Download MP3</button></div>\
+							</div>\
+						</div>\
+					</div>'
+				);
+			}
+			if (data.prevPageToken) {
+				container.find('.dl-area-search-buttons').prepend('<button class="newpage btn btn-success" --data-token="' + data.prevPageToken + '" --data-search="' + query + '">Previous 50 results</button>');
+			}
+			if (data.nextPageToken) {
+				container.find('.dl-area-search-buttons').prepend('<button class="newpage btn btn-success" --data-token="' + data.nextPageToken + '" --data-search="' + query + '">Next 50 results</button>');
+			}
+			$('.overlay').css('display', 'none');
+		});
+	}
 }
